@@ -64,13 +64,9 @@
         color: var(--text);
         border: 1px solid var(--border);
       }
-      code {
-        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-        font-size: 0.85em;
-      }
-      ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.6; }
       .error { color: #ffb4a8; }
       footer { margin-top: 28px; color: var(--muted); font-size: 0.85rem; }
+      footer a { color: var(--accent); }
     </style>
   </head>
   <body>
@@ -78,31 +74,16 @@
       <div class="eyebrow">Desktop AI Pet</div>
       <h1>다운로드 / Downloads</h1>
       <p class="lead">
-        앱 설정 화면의 업데이트 확인은 이 페이지의
-        <code>latest.json</code> 과 앱 버전을 비교합니다.
-        <strong>ZIP 실행 파일은 GitHub Releases 에셋</strong>에 두고,
-        이 Pages 사이트는 버전 카탈로그만 제공합니다.
+        Desktop AI Pet 실행 파일을 받을 수 있는 페이지입니다.
+        Windows와 macOS용 빌드를 아래에서 선택해 다운로드하세요.
       </p>
 
       <section class="card" id="latest-card">
         <p class="meta">최신 버전 정보를 불러오는 중…</p>
       </section>
 
-      <section class="card">
-        <h2 style="margin-top:0;font-size:1.1rem">앱과 버전 연결</h2>
-        <ul>
-          <li>앱 버전: <code>package.json</code> / <code>tauri.conf.json</code> / Cargo.toml</li>
-          <li>카탈로그: <code>latest.json</code>, <code>versions.json</code></li>
-          <li>아티팩트: <code>releases/v&lt;version&gt;/</code></li>
-          <li>설정 → 업데이트 탭에서 “업데이트 확인” 가능</li>
-        </ul>
-      </section>
-
       <footer>
-        Machine-readable manifest:
-        <a href="./latest.json" style="color:var(--accent)">latest.json</a>
-        ·
-        <a href="./versions.json" style="color:var(--accent)">versions.json</a>
+        <a href="https://github.com/bluecafe/pet-releases/releases">모든 버전 (GitHub Releases)</a>
       </footer>
     </main>
     <script>
@@ -120,23 +101,23 @@
               return `<a class="button" href="${href}">${label}</a>`;
             })
             .join("");
+          const notesUrl = data.githubReleaseUrl || data.releaseNotesUrl || "";
           card.innerHTML = `
             <p class="version" id="v${data.latest}">v${data.latest}</p>
             <p class="meta">
-              product: ${data.product || "DesktopAIPet"}
-              · published: ${data.publishedAt || "—"}
-              · minimumSupported: ${data.minimumSupported || "—"}
+              ${data.publishedAt ? `게시: ${data.publishedAt}` : ""}
             </p>
-            <div>${links || "<span class='error'>다운로드 항목이 없습니다. publish 스크립트로 아티팩트를 올려 주세요.</span>"}</div>
-            <p class="meta" style="margin-top:12px">
-              <a class="button secondary" href="${data.githubReleaseUrl || data.releaseNotesUrl || "#"}">릴리즈 노트 (GitHub)</a>
-              ${data.releaseNotesUrl && data.releaseNotesUrl !== data.githubReleaseUrl
-                ? `<a class="button secondary" href="${data.releaseNotesUrl}">추가 노트</a>`
-                : ""}
-            </p>
+            <div>${links || "<span class='error'>다운로드 항목이 없습니다.</span>"}</div>
+            ${
+              notesUrl
+                ? `<p class="meta" style="margin-top:12px">
+                    <a class="button secondary" href="${notesUrl}">릴리즈 노트</a>
+                  </p>`
+                : ""
+            }
           `;
         } catch (error) {
-          card.innerHTML = `<p class="error">latest.json 로드 실패: ${String(error)}</p>`;
+          card.innerHTML = `<p class="error">버전 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>`;
         }
       }
       loadLatest();
