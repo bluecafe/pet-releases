@@ -32,5 +32,8 @@
       "sha256": "38d4fa49f688d057f0fa0237bed3b8fabba937e87122abcc2820a0fd1a702d1d",
       "sizeBytes": 15541337
     }
-  }
+  },
+  "heroImage": "releases/v0.1.0/pet.png",
+  "heroName": "Hermes",
+  "heroNameKo": "에르"
 }

@@ -23,7 +23,7 @@
         color: var(--text);
       }
       main {
-        max-width: 760px;
+        max-width: 800px;
         margin: 0 auto;
         padding: 48px 20px 64px;
       }
@@ -42,6 +42,39 @@
         border-radius: 16px;
         padding: 20px;
         margin-bottom: 16px;
+      }
+      .version-row {
+        display: flex;
+        gap: 20px;
+        align-items: stretch;
+        justify-content: space-between;
+      }
+      .version-main {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .version-hero {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-width: 140px;
+      }
+      .version-hero img {
+        width: 148px;
+        height: 148px;
+        object-fit: contain;
+        border-radius: 16px;
+        background: radial-gradient(circle at 50% 40%, #2a3140, #141820 70%);
+        border: 1px solid var(--border);
+        image-rendering: auto;
+      }
+      .version-hero .pet-name {
+        color: var(--muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
       }
       .version {
         font-size: 1.4rem;
@@ -67,6 +100,11 @@
       .error { color: #ffb4a8; }
       footer { margin-top: 28px; color: var(--muted); font-size: 0.85rem; }
       footer a { color: var(--accent); }
+      @media (max-width: 560px) {
+        .version-row { flex-direction: column-reverse; align-items: center; text-align: center; }
+        .version-main { width: 100%; }
+        a.button { margin: 0 6px 10px; }
+      }
     </style>
   </head>
   <body>
@@ -87,6 +125,14 @@
       </footer>
     </main>
     <script>
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
       async function loadLatest() {
         const card = document.getElementById("latest-card");
         try {
@@ -98,23 +144,42 @@
             .map(([key, item]) => {
               const href = item.url || item.path || "#";
               const label = item.label || key;
-              return `<a class="button" href="${href}">${label}</a>`;
+              return `<a class="button" href="${escapeHtml(href)}">${escapeHtml(label)}</a>`;
             })
             .join("");
           const notesUrl = data.githubReleaseUrl || data.releaseNotesUrl || "";
+          const heroSrc = data.heroImage || "";
+          const heroName =
+            data.heroNameKo && data.heroName
+              ? `${data.heroNameKo} / ${data.heroName}`
+              : data.heroNameKo || data.heroName || "";
+          const published = data.publishedAt
+            ? `게시: ${escapeHtml(String(data.publishedAt).replace("T", " ").replace(/\.\d+Z$/, " UTC"))}`
+            : "";
+
+          const heroHtml = heroSrc
+            ? `<div class="version-hero">
+                 <img src="${escapeHtml(heroSrc)}" alt="${escapeHtml(heroName || "대표 캐릭터")}" width="148" height="148" />
+                 ${heroName ? `<span class="pet-name">${escapeHtml(heroName)}</span>` : ""}
+               </div>`
+            : "";
+
           card.innerHTML = `
-            <p class="version" id="v${data.latest}">v${data.latest}</p>
-            <p class="meta">
-              ${data.publishedAt ? `게시: ${data.publishedAt}` : ""}
-            </p>
-            <div>${links || "<span class='error'>다운로드 항목이 없습니다.</span>"}</div>
-            ${
-              notesUrl
-                ? `<p class="meta" style="margin-top:12px">
-                    <a class="button secondary" href="${notesUrl}">릴리즈 노트</a>
-                  </p>`
-                : ""
-            }
+            <div class="version-row">
+              <div class="version-main">
+                <p class="version" id="v${escapeHtml(data.latest)}">v${escapeHtml(data.latest)}</p>
+                <p class="meta">${published}</p>
+                <div>${links || "<span class='error'>다운로드 항목이 없습니다.</span>"}</div>
+                ${
+                  notesUrl
+                    ? `<p class="meta" style="margin-top:12px;margin-bottom:0">
+                        <a class="button secondary" href="${escapeHtml(notesUrl)}">릴리즈 노트</a>
+                      </p>`
+                    : ""
+                }
+              </div>
+              ${heroHtml}
+            </div>
           `;
         } catch (error) {
           card.innerHTML = `<p class="error">버전 정보를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>`;
