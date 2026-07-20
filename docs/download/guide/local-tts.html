@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>음성 읽기 (TTS) — Desktop AI Pet</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        --bg: #12141a; --card: #1c1f28; --text: #f4f5f8; --muted: #a7adb9;
+        --accent: #7ec8ff; --border: rgba(255,255,255,.12);
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top,#1d2433,var(--bg) 55%); color: var(--text); }
+      main { max-width: 800px; margin: 0 auto; padding: 40px 20px 64px; }
+      a { color: var(--accent); }
+      h1 { margin: 0 0 8px; font-size: 1.75rem; }
+      h2 { margin: 28px 0 10px; font-size: 1.2rem; }
+      .eyebrow { color: var(--accent); letter-spacing: .08em; text-transform: uppercase; font-size: .75rem; margin-bottom: 10px; }
+      .lead { color: var(--muted); line-height: 1.55; margin: 0 0 24px; }
+      .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin: 14px 0; }
+      pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .84rem; }
+      pre { background: #0e1117; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; overflow: auto; line-height: 1.45; white-space: pre-wrap; }
+      ul, ol { color: var(--muted); line-height: 1.55; }
+      .note { color: var(--muted); font-size: .9rem; }
+      .ok { color: #9be7a8; }
+      table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+      th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+      th { color: var(--muted); font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">Desktop AI Pet</div>
+      <h1>음성 읽기 (TTS)</h1>
+      <p class="lead">
+        캐릭터 대사 읽기는 별도 서버 없이 <strong>OS 내장 음성 합성</strong>
+        (Web Speech API <code>speechSynthesis</code>)을 사용합니다.
+        <strong>macOS · Windows 모두 동일 코드 경로</strong>로 동작합니다.
+        앱이 언어(ko/en)에 맞는 로컬 음성을 자동 선택합니다.
+      </p>
+      <p class="note">
+        <a href="../">← 다운로드</a> ·
+        <a href="./local-stt.html">로컬 음성 인식(Whisper)</a>
+      </p>
+
+      <section class="card">
+        <h2 style="margin-top:0">지원 요약</h2>
+        <table>
+          <thead>
+            <tr><th>플랫폼</th><th>엔진</th><th>비고</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="ok">macOS</td>
+              <td>AVSpeech / 시스템 음성 (WKWebView)</td>
+              <td>시스템 설정에 한국어·영어 음성 설치 권장</td>
+            </tr>
+            <tr>
+              <td class="ok">Windows</td>
+              <td>SAPI / OneCore (WebView2)</td>
+              <td>설정 → 시간 및 언어 → 음성에서 언어 팩·음성 추가</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:12px;margin-bottom:0">
+          설정에서 음성 이름을 비워 두면 OS 기본 음성을 사용합니다.
+          대화 답변과 자발 대사(ambient) 모두 같은 TTS 경로입니다.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">앱에서 켜기</h2>
+        <ol>
+          <li>설정 → <strong>행동</strong> 탭</li>
+          <li><strong>음성 읽기(TTS)</strong> 체크</li>
+          <li>속도(rate) 조절 (0.5–2.0)</li>
+          <li>(선택) 한국어/영어 음성 이름을 OS에 표시되는 이름과 동일하게 입력</li>
+          <li>저장 후 대화 또는 자발 대사가 소리로 나오는지 확인</li>
+        </ol>
+        <p class="note">
+          언어를 바꾼 뒤 해당 언어 음성이 없으면 안내 토스트가 뜹니다.
+          그 경우 아래 OS 설정을 확인하세요.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">macOS 음성 설치</h2>
+        <ol>
+          <li>시스템 설정 → 손쉬운 사용 → 읽기 도구(Spoken Content) 또는 음성 콘텐츠</li>
+          <li>시스템 음성 관리에서 한국어(예: Yuna, Sora) · 영어 음성 다운로드</li>
+          <li>또는 시스템 설정 → 일반 → 언어 및 지역 에서 한국어 추가</li>
+          <li>앱을 완전히 종료했다가 다시 실행한 뒤 TTS 테스트</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">Windows 음성 설치</h2>
+        <ol>
+          <li>설정 → 시간 및 언어 → 언어 및 지역 → 한국어/영어 언어 팩 설치</li>
+          <li>설정 → 시간 및 언어 → 음성 → 음성 추가</li>
+          <li>WebView2 Runtime 확인 (Windows 11 기본 포함, 없으면 Evergreen 설치)</li>
+          <li>앱 설정에서 TTS 켠 뒤 대화 테스트</li>
+        </ol>
+        <p class="note">
+          음성이 비어 있으면 말풍선은 보이지만 소리가 나지 않을 수 있습니다.
+          언어 팩 설치 후 앱을 <strong>완전히 종료</strong>했다가 다시 실행하세요.
+          시스템 볼륨·앱이 다른 출력 장치를 쓰는지 확인합니다.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">STT 와 차이</h2>
+        <ul>
+          <li><strong>TTS(읽기)</strong>: OS 내장, 설치 부담 적음, 네트워크 불필요, Win/Mac 기본 지원</li>
+          <li><strong>STT(말하기→글자)</strong>: 로컬 Whisper 서버 별도 실행 필요 →
+            <a href="./local-stt.html">설치 가이드</a></li>
+        </ul>
+      </section>
+
+      <p class="note"><a href="../">← 다운로드 페이지</a></p>
+    </main>
+  </body>
+</html>
