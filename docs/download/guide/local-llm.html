@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로컬 LLM · 대화 — Desktop AI Pet</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        --bg: #12141a; --card: #1c1f28; --text: #f4f5f8; --muted: #a7adb9;
+        --accent: #7ec8ff; --border: rgba(255,255,255,.12);
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; background: radial-gradient(circle at top,#1d2433,var(--bg) 55%); color: var(--text); }
+      main { max-width: 800px; margin: 0 auto; padding: 40px 20px 64px; }
+      a { color: var(--accent); }
+      h1 { margin: 0 0 8px; font-size: 1.75rem; }
+      h2 { margin: 28px 0 10px; font-size: 1.2rem; }
+      .eyebrow { color: var(--accent); letter-spacing: .08em; text-transform: uppercase; font-size: .75rem; margin-bottom: 10px; }
+      .lead { color: var(--muted); line-height: 1.55; margin: 0 0 24px; }
+      .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin: 14px 0; }
+      pre, code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .84rem; }
+      pre { background: #0e1117; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; overflow: auto; line-height: 1.45; white-space: pre-wrap; }
+      ul, ol { color: var(--muted); line-height: 1.55; }
+      .note { color: var(--muted); font-size: .9rem; }
+      nav a { margin-right: 12px; }
+      table { width: 100%; border-collapse: collapse; font-size: .9rem; margin-top: 8px; }
+      th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+      th { color: var(--muted); font-weight: 600; }
+      .ok { color: #9be7a8; }
+      .warn { color: #ffd48a; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">Desktop AI Pet</div>
+      <h1>로컬 LLM · 대화 기능</h1>
+      <p class="lead">
+        펫과 <strong>자유롭게 대화</strong>하려면 PC에서 돌아가는
+        <strong>로컬 LLM 서버</strong>가 필요합니다.
+        클라우드 API 키는 쓰지 않으며, 요청은
+        <code>http://127.0.0.1</code> (또는 <code>[::1]</code>) 으로만 나갑니다.
+        에이전트는 <strong>기본 꺼짐</strong>이라, 설정하지 않아도 책상 위 펫·규칙 기반 행동은 동작합니다.
+      </p>
+      <nav class="note">
+        <a href="../">← 다운로드</a>
+        <a href="./local-tts.html">TTS</a>
+        <a href="./local-stt.html">STT (Whisper)</a>
+      </nav>
+
+      <section class="card">
+        <h2 style="margin-top:0">무엇이 필요하고, 무엇이 아닌가</h2>
+        <table>
+          <thead>
+            <tr><th>기능</th><th>로컬 LLM</th><th>비고</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>책상 위 펫 · 걷기 · 상호작용</td>
+              <td class="ok">불필요</td>
+              <td>규칙 기반 동작</td>
+            </tr>
+            <tr>
+              <td>팩에 작성된 대사 · 말풍선</td>
+              <td class="ok">불필요</td>
+              <td>캐릭터 팩 데이터</td>
+            </tr>
+            <tr>
+              <td><strong>사용자 대화 (채팅)</strong></td>
+              <td class="warn">필요</td>
+              <td>설정 → 로컬 에이전트 켜기</td>
+            </tr>
+            <tr>
+              <td>LLM 기반 자발 대사 · 행동 제안</td>
+              <td class="warn">필요</td>
+              <td>에이전트 + 플래너 간격</td>
+            </tr>
+            <tr>
+              <td>음성 읽기 (TTS)</td>
+              <td class="ok">불필요</td>
+              <td><a href="./local-tts.html">OS 내장 TTS</a></td>
+            </tr>
+            <tr>
+              <td>마이크 → 글자 (STT)</td>
+              <td class="ok">불필요*</td>
+              <td><a href="./local-stt.html">Whisper 서버</a> 별도 (*대화 전송은 LLM 필요)</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:12px;margin-bottom:0">
+          마이크만 켜도 인식 결과 글자는 입력창에 들어가지만,
+          <strong>답변을 생성하려면</strong> 로컬 에이전트(LLM)가 켜져 있어야 합니다.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">앱 설정 값 (공통 · Win/Mac)</h2>
+        <pre>endpoint: http://127.0.0.1:11434/api/generate
+model:    exaone3.5:7.8b   (또는 ollama list 에 있는 이름)
+플래너 간격: 45초 이상 (기본 45)</pre>
+        <ol>
+          <li>PC에서 LLM 서버를 먼저 실행 (아래 Ollama 권장)</li>
+          <li>Desktop AI Pet 설정 → <strong>로컬 에이전트</strong></li>
+          <li>endpoint · model 입력</li>
+          <li><strong>로컬 에이전트 사용</strong> 체크 후 저장</li>
+          <li>(선택) <strong>에이전트 대화 테스트</strong>로 연결 확인</li>
+          <li>우클릭 → 대화 → 메시지 전송</li>
+        </ol>
+        <p class="note">
+          보안: endpoint는 loopback만 허용됩니다.
+          외부 IP · HTTPS · <code>localhost</code> 문자열 · 쿼리/인증 정보는 거부됩니다.
+          대화 원문 영구 저장은 기본 꺼짐이며, 메모리 탭에서 따로 켤 수 있습니다.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">macOS — Ollama 설치</h2>
+        <ol>
+          <li>
+            설치 (둘 중 하나)
+            <pre># 공식 설치 스크립트
+curl -fsSL https://ollama.com/install.sh | sh
+
+# 또는 DMG: https://ollama.com/download/mac
+# (macOS 14 Sonoma 이상 권장)</pre>
+          </li>
+          <li>서버 확인 (설치 후 보통 백그라운드에서 동작)
+            <pre>ollama serve
+# 다른 터미널에서:
+curl http://127.0.0.1:11434/</pre>
+            응답이 오면 준비된 상태입니다.
+          </li>
+          <li>모델 받기
+            <pre># 앱 기본 예시 (용량 큼 — 한국어 품질 양호)
+ollama pull exaone3.5:7.8b
+
+# 더 가벼운 대안 예 (이름 그대로 앱 model 칸에 입력)
+ollama pull llama3.2
+# 또는
+ollama pull qwen2.5:7b</pre>
+          </li>
+          <li>동작 확인
+            <pre>ollama list
+ollama run exaone3.5:7.8b "안녕, 짧게 인사해줘"</pre>
+          </li>
+          <li>앱 설정에 endpoint / model 을 맞추고 에이전트를 켭니다.</li>
+        </ol>
+        <p class="note">
+          RAM·디스크: 7B급은 대략 수 GB~십수 GB 여유를 권장합니다.
+          느리면 더 작은 모델로 바꾸세요.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">Windows — Ollama 설치</h2>
+        <ol>
+          <li>
+            설치 (둘 중 하나)
+            <pre># PowerShell
+irm https://ollama.com/install.ps1 | iex
+
+# 또는 설치 파일: https://ollama.com/download/windows
+# (Windows 10 이상)</pre>
+          </li>
+          <li>설치 후 트레이에 Ollama가 떠 있는지 확인. 필요하면 시작 메뉴에서 Ollama 실행.</li>
+          <li>PowerShell / 명령 프롬프트에서 모델 받기
+            <pre>ollama pull exaone3.5:7.8b
+
+# 가벼운 대안 예
+ollama pull llama3.2
+ollama pull qwen2.5:7b</pre>
+          </li>
+          <li>연결 확인
+            <pre>curl http://127.0.0.1:11434/
+ollama list</pre>
+          </li>
+          <li>앱 설정
+            <pre>endpoint: http://127.0.0.1:11434/api/generate
+model:    ollama list 에 표시된 이름 그대로</pre>
+            <strong>로컬 에이전트 사용</strong> 켠 뒤 저장 → 대화 테스트.
+          </li>
+        </ol>
+        <p class="note">
+          Windows 방화벽 팝업이 뜨면 <strong>개인 네트워크</strong>에서 Ollama 허용.
+          앱은 127.0.0.1 만 쓰므로 외부 공개는 필요 없습니다.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">대화 사용 흐름</h2>
+        <ol>
+          <li>Ollama(또는 호환 서버) 실행 + 모델 pull 완료</li>
+          <li>앱에서 로컬 에이전트 ON</li>
+          <li>펫 우클릭 → <strong>대화</strong></li>
+          <li>텍스트 입력 후 보내기 (또는 STT로 입력 후 보내기)</li>
+          <li>전송 중 → 답변 대기 → 말풍선·대화 기록에 공개 reply 표시</li>
+        </ol>
+        <p class="note">
+          thinking / reasoning / JSON 내부 힌트는 사용자에게 노출되지 않도록 걸러집니다.
+          서버가 꺼져 있거나 타임아웃이면 안전한 fallback 메시지가 나가고, 펫 애니메이션은 계속됩니다.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">Ollama 외 서버</h2>
+        <ul>
+          <li>앱이 기대하는 형태는 <strong>loopback HTTP POST</strong> 로 텍스트 생성을 하는 로컬 엔드포인트입니다.</li>
+          <li>권장·검증 경로는 Ollama <code>/api/generate</code> 입니다.</li>
+          <li>다른 로컬 서버를 쓸 경우, 앱이 보내는 요청 형식과 맞는 어댑터가 있어야 하며
+            endpoint는 반드시 <code>http://127.0.0.1:…</code> 또는 <code>http://[::1]:…</code> 이어야 합니다.</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">자주 하는 확인</h2>
+        <table>
+          <thead>
+            <tr><th>증상</th><th>확인할 것</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>대화가 실패 / 타임아웃</td>
+              <td><code>ollama list</code>, 서버 실행 여부, model 이름 오타, RAM 부족</td>
+            </tr>
+            <tr>
+              <td>설정 저장 거부</td>
+              <td>endpoint가 127.0.0.1 인지, 플래너 간격 ≥ 45초</td>
+            </tr>
+            <tr>
+              <td>에이전트 껐는데 펫이 안 움직임?</td>
+              <td>정상 — 에이전트 없이도 규칙 기반 동작은 유지</td>
+            </tr>
+            <tr>
+              <td>자발 대사만 막고 싶을 때</td>
+              <td>설정 <strong>조용한 모드</strong> (직접 대화 응답은 유지)</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0">관련 안내</h2>
+        <ul>
+          <li><a href="./local-tts.html">음성 읽기 (TTS)</a> — OS 내장, LLM 불필요</li>
+          <li><a href="./local-stt.html">로컬 음성 인식 (Whisper)</a> — 마이크 입력용 별도 서버</li>
+        </ul>
+      </section>
+
+      <p class="note"><a href="../">← 다운로드 페이지</a></p>
+    </main>
+  </body>
+</html>
