@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "product": "DesktopAIPet",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "publishedAt": "2026-07-20T14:10:50.000Z",
+      "channel": "stable",
+      "manifest": "releases/v0.1.0/manifest.json",
+      "githubReleaseUrl": "https://github.com/bluecafe/pet-releases/releases/tag/v0.1.0",
+      "notes": "Windows x64 + macOS arm64 portable builds. Source remains in private bluecafe/pet."
+    }
+  ]
+}

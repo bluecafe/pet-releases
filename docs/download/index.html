@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desktop AI Pet — Downloads</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        --bg: #12141a;
+        --card: #1c1f28;
+        --text: #f4f5f8;
+        --muted: #a7adb9;
+        --accent: #7ec8ff;
+        --border: rgba(255, 255, 255, 0.12);
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #1d2433, var(--bg) 55%);
+        color: var(--text);
+      }
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 48px 20px 64px;
+      }
+      h1 { margin: 0 0 8px; font-size: 2rem; }
+      .eyebrow {
+        color: var(--accent);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        margin-bottom: 12px;
+      }
+      .lead { color: var(--muted); line-height: 1.5; margin: 0 0 28px; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .version {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin: 0 0 4px;
+      }
+      .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 16px; }
+      a.button {
+        display: inline-block;
+        margin: 0 10px 10px 0;
+        padding: 10px 14px;
+        border-radius: 10px;
+        background: var(--accent);
+        color: #0b1520;
+        text-decoration: none;
+        font-weight: 700;
+      }
+      a.button.secondary {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 0.85em;
+      }
+      ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.6; }
+      .error { color: #ffb4a8; }
+      footer { margin-top: 28px; color: var(--muted); font-size: 0.85rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="eyebrow">Desktop AI Pet</div>
+      <h1>다운로드 / Downloads</h1>
+      <p class="lead">
+        앱 설정 화면의 업데이트 확인은 이 페이지의
+        <code>latest.json</code> 과 앱 버전을 비교합니다.
+        <strong>ZIP 실행 파일은 GitHub Releases 에셋</strong>에 두고,
+        이 Pages 사이트는 버전 카탈로그만 제공합니다.
+      </p>
+
+      <section class="card" id="latest-card">
+        <p class="meta">최신 버전 정보를 불러오는 중…</p>
+      </section>
+
+      <section class="card">
+        <h2 style="margin-top:0;font-size:1.1rem">앱과 버전 연결</h2>
+        <ul>
+          <li>앱 버전: <code>package.json</code> / <code>tauri.conf.json</code> / Cargo.toml</li>
+          <li>카탈로그: <code>latest.json</code>, <code>versions.json</code></li>
+          <li>아티팩트: <code>releases/v&lt;version&gt;/</code></li>
+          <li>설정 → 업데이트 탭에서 “업데이트 확인” 가능</li>
+        </ul>
+      </section>
+
+      <footer>
+        Machine-readable manifest:
+        <a href="./latest.json" style="color:var(--accent)">latest.json</a>
+        ·
+        <a href="./versions.json" style="color:var(--accent)">versions.json</a>
+      </footer>
+    </main>
+    <script>
+      async function loadLatest() {
+        const card = document.getElementById("latest-card");
+        try {
+          const res = await fetch("./latest.json", { cache: "no-store" });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          const downloads = data.downloads || {};
+          const links = Object.entries(downloads)
+            .map(([key, item]) => {
+              const href = item.url || item.path || "#";
+              const label = item.label || key;
+              return `<a class="button" href="${href}">${label}</a>`;
+            })
+            .join("");
+          card.innerHTML = `
+            <p class="version" id="v${data.latest}">v${data.latest}</p>
+            <p class="meta">
+              product: ${data.product || "DesktopAIPet"}
+              · published: ${data.publishedAt || "—"}
+              · minimumSupported: ${data.minimumSupported || "—"}
+            </p>
+            <div>${links || "<span class='error'>다운로드 항목이 없습니다. publish 스크립트로 아티팩트를 올려 주세요.</span>"}</div>
+            <p class="meta" style="margin-top:12px">
+              <a class="button secondary" href="${data.releaseNotesUrl || "#"}">릴리즈 노트 / 페이지</a>
+            </p>
+          `;
+        } catch (error) {
+          card.innerHTML = `<p class="error">latest.json 로드 실패: ${String(error)}</p>`;
+        }
+      }
+      loadLatest();
+    </script>
+  </body>
+</html>
