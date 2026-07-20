@@ -3,7 +3,7 @@
   "product": "DesktopAIPet",
   "latest": "0.1.0",
   "minimumSupported": "0.1.0",
-  "releaseNotesUrl": "https://bluecafe.github.io/pet-releases/download/#v0.1.0",
+  "releaseNotesUrl": "https://github.com/bluecafe/pet-releases/releases/tag/v0.1.0",
   "githubReleaseUrl": "https://github.com/bluecafe/pet-releases/releases/tag/v0.1.0",
   "sourceRepo": "https://github.com/bluecafe/pet",
   "publishedAt": "2026-07-20T14:10:50.000Z",

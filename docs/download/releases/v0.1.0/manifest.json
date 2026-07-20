@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "publishedAt": "2026-07-20T14:10:50.000Z",
   "channel": "stable",
-  "releaseNotesUrl": "https://bluecafe.github.io/pet-releases/download/#v0.1.0",
+  "releaseNotesUrl": "https://github.com/bluecafe/pet-releases/releases/tag/v0.1.0",
   "githubReleaseUrl": "https://github.com/bluecafe/pet-releases/releases/tag/v0.1.0",
   "assetHost": "release",
   "downloads": {

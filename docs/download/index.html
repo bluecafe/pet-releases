@@ -129,7 +129,10 @@
             </p>
             <div>${links || "<span class='error'>다운로드 항목이 없습니다. publish 스크립트로 아티팩트를 올려 주세요.</span>"}</div>
             <p class="meta" style="margin-top:12px">
-              <a class="button secondary" href="${data.releaseNotesUrl || "#"}">릴리즈 노트 / 페이지</a>
+              <a class="button secondary" href="${data.githubReleaseUrl || data.releaseNotesUrl || "#"}">릴리즈 노트 (GitHub)</a>
+              ${data.releaseNotesUrl && data.releaseNotesUrl !== data.githubReleaseUrl
+                ? `<a class="button secondary" href="${data.releaseNotesUrl}">추가 노트</a>`
+                : ""}
             </p>
           `;
         } catch (error) {
