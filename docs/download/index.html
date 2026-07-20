@@ -120,6 +120,18 @@
         <p class="meta">최신 버전 정보를 불러오는 중…</p>
       </section>
 
+
+      <section class="card" id="macos-help">
+        <h2 style="margin:0 0 8px;font-size:1.1rem">macOS에서 “손상됨”이 뜰 때</h2>
+        <p class="meta" style="margin-bottom:10px">
+          앱이 깨진 것이 아닙니다. 다운로드 파일에 붙는 격리 속성 때문입니다.
+          <strong>우클릭 열기 / Open-First-Time.command 더블클릭으로는 해결되지 않는 경우가 많습니다.</strong>
+        </p>
+        <p class="meta" style="margin-bottom:8px">터미널(응용 프로그램 → 유틸리티 → 터미널)에 아래를 붙여넣으세요:</p>
+        <pre style="background:#0e1117;border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow:auto;font-size:0.85rem;line-height:1.45;color:#d7dde8">xattr -cr ~/Downloads/DesktopAIPet.app &amp;&amp; open ~/Downloads/DesktopAIPet.app</pre>
+        <p class="meta" style="margin:10px 0 0">앱 위치가 다르면 <code>~/Downloads/</code> 부분만 실제 경로로 바꾸면 됩니다.</p>
+      </section>
+
       <footer>
         <a href="https://github.com/bluecafe/pet-releases/releases">모든 버전 (GitHub Releases)</a>
       </footer>
