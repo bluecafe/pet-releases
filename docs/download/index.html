@@ -120,19 +120,29 @@
         <p class="meta">최신 버전 정보를 불러오는 중…</p>
       </section>
 
-
       <section class="card" id="macos-help">
         <h2 style="margin:0 0 8px;font-size:1.1rem">macOS에서 “손상됨”이 뜰 때</h2>
         <p class="meta" style="margin-bottom:10px">
-          앱이 깨진 것이 아닙니다. 다운로드 파일에 붙는 격리 속성 때문입니다.
-          <strong>우클릭 열기 / Open-First-Time.command 더블클릭으로는 해결되지 않는 경우가 많습니다.</strong>
+          앱이 깨진 것이 아닙니다. 다운로드 파일에 붙는 격리(quarantine) 때문입니다.
+          <strong>우클릭 열기 / ZIP 안 스크립트 더블클릭만으로는 안 되는 경우가 많습니다.</strong>
+          앱을 다른 폴더로 옮길 필요는 없습니다. <strong>실제 .app 경로</strong>만 맞추면 됩니다.
         </p>
-        <p class="meta" style="margin-bottom:8px">터미널(응용 프로그램 → 유틸리티 → 터미널)에 아래를 붙여넣으세요:</p>
-        <pre style="background:#0e1117;border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow:auto;font-size:0.85rem;line-height:1.45;color:#d7dde8">xattr -cr ~/Downloads/DesktopAIPet.app &amp;&amp; open ~/Downloads/DesktopAIPet.app</pre>
-        <p class="meta" style="margin:10px 0 0">앱 위치가 다르면 <code>~/Downloads/</code> 부분만 실제 경로로 바꾸면 됩니다.</p>
+        <p class="meta" style="margin-bottom:6px">ZIP을 풀면 보통:</p>
+        <pre style="background:#0e1117;border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow:auto;font-size:0.8rem;line-height:1.45;color:#d7dde8;margin:0 0 12px">~/Downloads/DesktopAIPet.app
+# 또는
+~/Downloads/DesktopAIPet-macos-arm64/DesktopAIPet.app</pre>
+        <p class="meta" style="margin-bottom:8px">터미널(응용 프로그램 → 유틸리티 → 터미널)에 경로에 맞게 붙여넣기:</p>
+        <pre style="background:#0e1117;border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow:auto;font-size:0.8rem;line-height:1.45;color:#d7dde8;margin:0 0 10px">xattr -cr ~/Downloads/DesktopAIPet.app &amp;&amp; open ~/Downloads/DesktopAIPet.app
+
+# 폴더 안에 있으면:
+xattr -cr ~/Downloads/DesktopAIPet-macos-arm64/DesktopAIPet.app &amp;&amp; open ~/Downloads/DesktopAIPet-macos-arm64/DesktopAIPet.app</pre>
+        <p class="meta" style="margin:0">
+          경로가 헷갈리면 터미널에 <code>xattr -cr </code>(끝에 공백)을 친 뒤,
+          Finder의 <code>DesktopAIPet.app</code>을 터미널로 끌어다 넣고 Enter 하세요.
+        </p>
       </section>
 
-      <footer>
+<footer>
         <a href="https://github.com/bluecafe/pet-releases/releases">모든 버전 (GitHub Releases)</a>
       </footer>
     </main>
