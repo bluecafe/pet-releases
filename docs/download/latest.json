@@ -29,8 +29,8 @@
       "path": null,
       "releaseTag": "v0.1.0",
       "assetName": "DesktopAIPet-macos-arm64.zip",
-      "sha256": "38d4fa49f688d057f0fa0237bed3b8fabba937e87122abcc2820a0fd1a702d1d",
-      "sizeBytes": 15541337
+      "sha256": "a3db966dc9a2f13b574970aa3ec094418e7ce61cf66588ba76d485ef11f8c0c0",
+      "sizeBytes": 15441064
     }
   },
   "heroImage": "releases/v0.1.0/pet.png",
