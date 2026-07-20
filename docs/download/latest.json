@@ -6,7 +6,7 @@
   "releaseNotesUrl": "https://github.com/bluecafe/pet-releases/releases/tag/v0.1.0",
   "githubReleaseUrl": "https://github.com/bluecafe/pet-releases/releases/tag/v0.1.0",
   "sourceRepo": "https://github.com/bluecafe/pet",
-  "publishedAt": "2026-07-20T14:10:50.000Z",
+  "publishedAt": "2026-07-20T16:12:43.000Z",
   "assetHost": "release",
   "appVersionSource": {
     "packageJson": "apps/desktop-tauri/package.json (bluecafe/pet)",
@@ -20,8 +20,8 @@
       "path": null,
       "releaseTag": "v0.1.0",
       "assetName": "DesktopAIPet-windows-x64.zip",
-      "sha256": "7c271014b7b221c14692ff79a98debc7f8d560886c4c471aa968b94fd3793027",
-      "sizeBytes": 15881029
+      "sha256": "23771d336926baaf66b195ddeecf4d1098f8a64c1e2dfea34778328ebbd9c0c2",
+      "sizeBytes": 15955498
     },
     "macos-arm64": {
       "label": "macOS Apple Silicon (.app ZIP)",
@@ -29,8 +29,8 @@
       "path": null,
       "releaseTag": "v0.1.0",
       "assetName": "DesktopAIPet-macos-arm64.zip",
-      "sha256": "7c5706a945ff9fb8323cf4001f3d61904cea97a672232602bcff4998d2445c10",
-      "sizeBytes": 15439258
+      "sha256": "c5cb5f5d597b8b0e7a723fdd31708c07eb670fe4b0a41b392a67ae607f913a17",
+      "sizeBytes": 15438754
     }
   },
   "heroImage": "releases/v0.1.0/pet.png",
